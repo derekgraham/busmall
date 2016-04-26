@@ -79,6 +79,5 @@ initArrays();
 newChoices();
 var counter = 0;
 
-
 var elImageClick = document.getElementById('image-container');
 document.addEventListener('click', clickHandler, false);
