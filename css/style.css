@@ -1,5 +1,4 @@
 
-
 .button {
 display: inline-block;
 height: 38px;
@@ -40,6 +39,11 @@ input[type="button"]:focus {
     color: white;
   }
 
+  #reset-button {
+    display: flex;
+    align-self: flex-end;
+
+  }
 h1, h2 {
   font-family: sans-serif;
 }
@@ -76,7 +80,7 @@ h1, h2 {
   display: flex;
   height: 300px;
 width: 300px;
-/*border: 2px solid black;*/
+border: 2px solid black;
 
 }
 .image2 {;
@@ -84,7 +88,7 @@ width: 300px;
   display: flex;
   height: 300px;
 width: 300px;
-/*border: 2px solid black;*/
+border: 2px solid black;
 
 }
 .image3 {
@@ -92,7 +96,7 @@ width: 300px;
   display: flex;
   height: 300px;
   width: 300px;
-/*border: 2px solid black;*/
+border: 2px solid black;
 
 }
 .cell {
@@ -116,14 +120,10 @@ width: 300px;
   justify-content: center;
 }
 .chartbox {
-  display: flex;
   width: 70%;
-  height: 10%;
   border: 2px solid black;
 }
 .chart {
-  display: flex;
-  height: 100px;
 }
 img {max-width: 300px;
 max-height: 300px;
