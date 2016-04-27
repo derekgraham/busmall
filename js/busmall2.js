@@ -19,7 +19,11 @@ var imageFiles = [ 'bag.jpg',
 'water-can.jpg',
 'wine-glass.jpg'];
 
+var counter = 1;
+var maxClicks = 25;
+
 var productList = [];
+
 function ProductList(filenames) {
   this.ProductList = [];
   for (var i = 0 ; i < filenames.length ; i ++) {
@@ -60,7 +64,6 @@ ProductList.prototype.spin = function(){
     unique[2] = this.randomImage();
   }
   return unique;
-
 };
 
 // return objects in array instead of indices.
@@ -91,14 +94,16 @@ ProductList.prototype.newChoices = function() {
   mySpin[2].displayedCount ++;
 };
 
-var myLabels = [];
-
 ProductList.prototype.genLabels = function() {
   var tempArray = [];
   this.ProductList.forEach( function(product) {
     tempArray.push(product.filename);
   }, this);
   return tempArray;
+};
+ProductList.prototype.storeData = function () {
+  myVar = JSON.stringify(this.generateStorage());
+  localStorage.setItem('productList',myVar);
 };
 
 ProductList.prototype.genData = function() {
@@ -109,37 +114,74 @@ ProductList.prototype.genData = function() {
   return tempArray;
 };
 
+ProductList.prototype.generateStorage = function() {
+  var tempArray = [];
+  this.ProductList.forEach( function (product){
+    tempArray.push([product.filename, product.clickCount, product.displayedCount]);
+  }, this);
+  return tempArray;
+};
+
+ProductList.prototype.updateFromStorage = function() {
+  var myParsedList = JSON.parse(localStorage.getItem('productList'));
+  for (var i = 0; i < myParsedList.length ; i++) {
+    this.ProductList[i].filename = myParsedList[i][0];
+    this.ProductList[i].clickCount = myParsedList[i][1];
+    this.ProductList[i].displayedCount = myParsedList[i][2];
+    this.ProductList[i].index = i;
+
+  }
+};
+
 function clickHandler(e) {
   var targetEl = e.target;
   e.preventDefault();
-  if ( counter < maxClicks ) {
+  if ( counter++ < maxClicks ) {
     if ( targetEl.getAttribute('value') ) {
       productList['ProductList'][targetEl.getAttribute('value')].clickCount ++;
+      productList.storeData();
       productList.newChoices();
-      counter ++;
     }
   } else {
-    toggleHidden('survey');
-    toggleHidden('continue');
+    hideHidden('survey');
+    showHidden('continue');
   }
 }
 
 function toggleHidden(classname){
   var hiddenEls = document.getElementsByClassName(classname);
-  console.log(hiddenEls);
+  // console.log(hiddenEls);
   for ( var i = 0; i < hiddenEls.length ; i ++) {
-    console.log(hiddenEls[i].classList);
+    // console.log(hiddenEls[i].classList);
     hiddenEls[i].classList.toggle('hidden');
+  }
+}
+
+function hideHidden(classname){
+  var hiddenEls = document.getElementsByClassName(classname);
+  // console.log(hiddenEls);
+  for ( var i = 0; i < hiddenEls.length ; i ++) {
+    // console.log(hiddenEls[i].classList);
+    hiddenEls[i].classList.add('hidden');
+  }
+}
+function showHidden(classname){
+  var hiddenEls = document.getElementsByClassName(classname);
+  // console.log(hiddenEls);
+  for ( var i = 0; i < hiddenEls.length ; i ++) {
+    // console.log(hiddenEls[i].classList);
+    hiddenEls[i].classList.remove('hidden');
   }
 }
 
 function buttonHandler(e) {
   var targetEl = e.target;
+  e.preventDefault();
   switch (e.target.id) {
   case 'begin-button':
-    console.log('begin Button');
-    toggleHidden('begin');
-    toggleHidden('survey');
+    hideHidden('begin');
+    productList.newChoices();
+    showHidden('survey');
 
     // hiddenEls.forEach( function(entry) {
     //   console.log(entry.classList);
@@ -148,20 +190,24 @@ function buttonHandler(e) {
     // }, this );
     break;
   case 'results-button':
-    console.log('results-button');
-    toggleHidden('continue');
-    toggleHidden('results');
+    showHidden('results');
+    hideHidden('continue');
+    showHidden('more');
     productList.summaryReport('test');
     productList.displayGraph();
 
     break;
   case 'more-button':
-    console.log('more-button');
     productList.newChoices();
-    counter = 0; maxClicks = 10;
-
-    toggleHidden('continue');
-    toggleHidden('survey');
+    maxClicks += 10;
+    hideHidden('continue');
+    showHidden('survey');
+    hideHidden('results');
+    break;
+  case 'reset-button':
+    console.log('clearing local storage');
+    localStorage.removeItem('productList');
+    location.reload();
     break;
   }
 }
@@ -226,26 +272,20 @@ ProductList.prototype.summaryReport = function(rowClass) {
 
   this.ProductList.forEach( function(product) {
     var td = document.createElement('td');
-    td.textContent = Math.round(product.clickCount / product.displayedCount * 100) + '%';
+    td.textContent = (product.displayedCount === 0 || product.clickCount === 0) ? '–' : (Math.round(product.clickCount / product.displayedCount * 100) + '%') ;
     tr.appendChild(td);
   }, this );
   appendRows.appendChild(tr);
 
 };
 
-var counter = 0;
-var maxClicks = 25;
+document.getElementById('image-container').addEventListener('click', clickHandler, false);
 
-var elImageClick = document.getElementById('image-container');
-elImageClick.addEventListener('click', clickHandler, false);
+document.getElementById('begin-button').addEventListener('click', buttonHandler, false);
 
-var elBeginButton = document.getElementById('begin-button');
-elBeginButton.addEventListener('click', buttonHandler, false);
+document.getElementById('button-bar').addEventListener('click', buttonHandler, false);
 
-var elButtonBar = document.getElementById('button-bar');
-elButtonBar.addEventListener('click', buttonHandler, false);
-
-productList.newChoices();
+document.getElementById('reset-button').addEventListener('click', buttonHandler, false);
 
 var myChart = document.getElementById('chart').getContext('2d');
 
@@ -255,7 +295,7 @@ ProductList.prototype.displayGraph = function() {
     labels: productList.genLabels(),
     datasets: [
       {
-        label: 'My First dataset',
+        label: 'Number of Clicks',
 
         // The properties below allow an array to be specified to change the value of the item at the given index
         // String  or array - the bar color
@@ -280,16 +320,17 @@ ProductList.prototype.displayGraph = function() {
         yAxisID: "y-axis-0",
       }
     ],
-//     options: [
-//     // Boolean - whether or not the chart should be responsive and resize when the browser does.
-//
-//       responsive: true,
-//
-// // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-//
-// maintainAspectRatio: false]
-//
+    options: {
+    // Boolean - whether or not the chart should be responsive and resize when the browser does.
+
+      responsive: false,
+
+  // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+
+      maintainAspectRatio: false}
+
   };
+  myChart.canvas.height = 100;
   var myBarChart = new Chart(myChart, {
     type: 'bar',
     data: data,
@@ -297,3 +338,8 @@ ProductList.prototype.displayGraph = function() {
   });
 
 };
+
+if (localStorage.getItem('productList')){
+  console.log('Local Storage Exists');
+  productList.updateFromStorage();
+}
