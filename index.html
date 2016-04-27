@@ -3,11 +3,20 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css" media="screen" title="no title" charset="utf-8">
+    <script src="js/Chart.min.js" type="text/javascript">
+
+    </script>
     <title></title>
   </head>
   <body>
+<div class="content">
+<h1>BusMall Market Research</h1>
+<h2>Spring 2016 Survey</h2>
+<form class="" action="index.html" method="post">
+  <a id="begin-button" class="button begin" type="button" name="Begin">Begin Survey</a>
+</form>
 
-    <div class="image-container">
+    <div id="image-container" class="survey hidden image-container">
       <div id="image1" class="cell">
         <img src="img/bag.jpg" alt="" />
       </div>
@@ -17,20 +26,29 @@
       <div id="image3" class="cell">
         <img src="img/pet-sweep.jpg" alt="" />
       </div>
-    </div
-    <ul id="filelist"> test</ul>
+    </div>
+    <div id="button-bar" class="continue hidden buttonbar">
+      <button id="results-button" class="button" type="button" name="Results">View Results</button>
+      <button id="more-button" class="button" type="button" name="10More">Show 10 more</button>
+    </div>
+    <div class="results hidden tablebox">
 
-    <table class="table table-header-rotated">
-    <thead>
-    <tr class="tableHeading">
-    </tr>
-    </thead>
-    <tbody id="append-rows">
-    </tbody>
-    <tfoot id='append-total'>
-    </tfoot>
-  </table>
-  <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/modernizr-2.7.1.js'></script>
+      <table class="table table-header-rotated">
+        <thead>
+        <tr class="tableHeading">
+        </tr>
+        </thead>
+        <tbody id="append-rows">
+        </tbody>
+        <tfoot id='append-total'>
+        </tfoot>
+      </table>
+    </div>
+  <div class="results hidden chartbox">
+    <canvas id="chart" ></canvas>
+  </div>
+</div>
+    <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/modernizr-2.7.1.js'></script>
 
     <script src="js/busmall2.js" type="text/javascript">
     </script>

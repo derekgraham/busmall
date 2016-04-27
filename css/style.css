@@ -1,26 +1,99 @@
+
+
+.button {
+display: inline-block;
+height: 38px;
+padding: 0 30px;
+color: #555;
+text-align: center;
+font-size: 11px;
+font-weight: 600;
+line-height: 38px;
+letter-spacing: .1rem;
+text-transform: uppercase;
+text-decoration: none;
+white-space: nowrap;
+background-color: transparent;
+border-radius: 4px;
+border: 1px solid #bbb;
+cursor: pointer;
+box-sizing: border-box;
+font-family: sans-serif;
+}
+
+.button:hover,
+button:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+input[type="button"]:hover,
+.button:focus,
+button:focus,
+input[type="submit"]:focus,
+input[type="reset"]:focus,
+input[type="button"]:focus {
+  color: #333;
+  border-color: #888;
+  outline: 0; }
+
+  .button:active {
+    background-color: black;
+    color: white;
+  }
+
+h1, h2 {
+  font-family: sans-serif;
+}
+.content {  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+}
 .image-container {
-  width: 90%;
   display: flex;
+  padding: 10px;
+  margin: 10px;
+  margin-top: 50px;
+  height: 300px;
+  width: 80%;
   flex-direction: row;
   align-content: space-around;
-  border: 2px solid black;
-
+  border: 2px solid darkGray;
+  justify-content: center;
+  align-items: center;
+/*
   box-orient: horizontal;
   box-pack: center;
    justify-content: center;
    box-align: center;
-   align-items: center;
+   align-items: center;*/
 
-   background-color: red;
+   /*background-color: red;*/
+
 }
 .image1 {
+  padding: 10px;
   display: flex;
+  height: 300px;
+width: 300px;
+/*border: 2px solid black;*/
+
 }
-.image2 {
+.image2 {;
+  padding: 10px
   display: flex;
+  height: 300px;
+width: 300px;
+/*border: 2px solid black;*/
+
 }
 .image3 {
+  padding: 10px
   display: flex;
+  height: 300px;
+  width: 300px;
+/*border: 2px solid black;*/
+
 }
 .cell {
   max-width: 30%;
@@ -31,11 +104,26 @@
     flex: 1 1 auto;
 
     padding: 10px;
-    margin: 10px;
+    /*margin: 10px;*/
 
-    background-color: green;
-    border: 1px solid red;
+    /*background-color: green;*/
+    /*border: 1px solid red;*/
     text-align: center;
+}
+.tablebox {
+  display: flex;
+  width: 80%;
+  justify-content: center;
+}
+.chartbox {
+  display: flex;
+  width: 70%;
+  height: 10%;
+  border: 2px solid black;
+}
+.chart {
+  display: flex;
+  height: 100px;
 }
 img {max-width: 300px;
 max-height: 300px;
@@ -74,4 +162,9 @@ max-height: 300px;
 .table-header-rotated th.row-header {
   padding: 0 10px;
   border-bottom: 1px solid #ccc;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
 }
