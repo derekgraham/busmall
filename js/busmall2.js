@@ -330,7 +330,7 @@ ProductList.prototype.displayGraph = function() {
       maintainAspectRatio: false}
 
   };
-  myChart.canvas.height = 100;
+  // myChart.canvas.height = 100;
   var myBarChart = new Chart(myChart, {
     type: 'bar',
     data: data,
